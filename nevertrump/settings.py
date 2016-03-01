@@ -35,6 +35,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'base',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -50,10 +51,14 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'nevertrump.urls'
 
+
 TEMPLATES = (
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            'templates', 
+            'base/templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -121,6 +126,7 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
+print('PROJECT_ROOT:', PROJECT_ROOT)
 STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, 'static'),
 ]

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p>Donald Trump is bad for the United States</p>
+
+<h2>Join <span>233,232</span> people and pledge<br /> to never vote for Trump</h2>
+
+<form action="/pledge" method="POST">
+    {% csrf_token %}
+    <label for="name">Your Name</label>
+    <input class="field" type="text" name="name" />
+    <label for="email">Your Email</label>
+    <input class="field" type="text" name="email" />
+    
+    <label for="party">Your Party</label>
+    <br /><br />
+    <a class="button">Republican</a>
+    <a class="button">Democrat</a>            
+    <a class="button">Other</a>
+    
+    <button class="main-button" href="#">Pledge to #NEVERTRUMP</button>
+</form>
+{% endblock %}
+
+

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>#NEVERTRUMP - Pledge to never vote for Donald Trump</title>
+		
+		
+		<!--  JS 	-->
+		{% load static %}
+		<script type="text/javascript" src="{% static 'j/jquery-2.1.1.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'j/proto.js' %}"></script>
+		
+		<!-- Apple app -->    
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+		
+		<!-- Styles -->
+		<link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,700' rel='stylesheet' type='text/css'>
+
+		<link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" media="screen" />  	
+	</head>
+	
+	
+	<body>
+
+
+    <div class="wrapper">
+
+      <div class="content"> 
+        
+          <h1>#NEVERTRUMP</h1>
+        
+          {% block content %}
+          {% endblock %}
+          
+      </div>
+
+    </div>
+    
+
+	</body>
+</html>
+
+
