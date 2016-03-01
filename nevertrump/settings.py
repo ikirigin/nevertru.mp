@@ -21,7 +21,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "sq2n0*#wzk^cc2c@+1hs#wk8j&5!+(@!y3zeqw-q8u$&f!v4$y"
+SECRET_KEY = "&6_zuy3b#ukc+%(=60ka$4orsg#&-78!#i*p%*4(&q1yfr#g3d"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -73,18 +73,12 @@ WSGI_APPLICATION = 'nevertrump.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES = {'default' : db_from_env}
-# DATABASES['default'].update(db_from_env)
-
-try:
-    import local_settings
-    print('using local settings')
-except:
-    print('using prod settings')
-
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 AUTH_PASSWORD_VALIDATORS = (
     {
@@ -106,9 +100,13 @@ AUTH_PASSWORD_VALIDATORS = (
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
-USE_I18N = False
-USE_L10N = False
+USE_I18N = True
+USE_L10N = True
 USE_TZ = True
+
+# Update database configuration with $DATABASE_URL.
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -119,15 +117,13 @@ ALLOWED_HOSTS = ['*']
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
+STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, 'static'),
-)
+]
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
