@@ -24,7 +24,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = "&6_zuy3b#ukc+%(=60ka$4orsg#&-78!#i*p%*4(&q1yfr#g3d"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Application definition
 
@@ -85,15 +85,13 @@ DATABASES = {
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
-from nevertrump.local_settings import *
-"""
 try:
     from nevertrump.local_settings import *
     print('using local settings')
 except:
     print('using prod settings')
     pass
-"""
+
 
 AUTH_PASSWORD_VALIDATORS = (
     {
