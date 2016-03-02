@@ -76,14 +76,19 @@ WSGI_APPLICATION = 'nevertrump.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
+import dj_database_url
+db_from_env = dj_database_url.config()
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': db_from_env,
 }
+
+try:
+    import local_settings
+    print('using local settings')
+except:
+    print('using prod settings')
+    pass
+
 
 AUTH_PASSWORD_VALIDATORS = (
     {

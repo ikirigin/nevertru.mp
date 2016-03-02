@@ -14,9 +14,10 @@
     
     <label for="party">Your Party</label>
     <br /><br />
-    <a class="button">Republican</a>
-    <a class="button">Democrat</a>            
-    <a class="button">Other</a>
+    <a class="button" onclick="$('#partyinput').attr('value','Republican')">Republican</a>
+    <a class="button" onclick="$('#partyinput').attr('value','Democrat')">Democrat</a>            
+    <a class="button" onclick="$('#partyinput').attr('value','Other')">Other</a>
+    <input id="partyinput" type='hidden' name='party' value='Default' />
     
     <button class="main-button" href="#">Pledge to #NEVERTRUMP</button>
 </form>
