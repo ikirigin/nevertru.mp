@@ -3,7 +3,8 @@
 {% block content %}
 <p>Donald Trump is bad for the United States</p>
 
-<h2>Join <span>233,232</span> people and pledge<br /> to never vote for Trump</h2>
+{# <span>233,232</span> #}
+<h2>Join millions of people and pledge<br /> to never vote for Trump</h2>
 
 <form action="/pledge" method="POST">
     {% csrf_token %}
@@ -17,7 +18,7 @@
     <a class="button" onclick="$('#partyinput').attr('value','Republican')">Republican</a>
     <a class="button" onclick="$('#partyinput').attr('value','Democrat')">Democrat</a>            
     <a class="button" onclick="$('#partyinput').attr('value','Other')">Other</a>
-    <input id="partyinput" type='hidden' name='party' value='Default' />
+    <input id="partyinput" type='hidden' name='party' value='Republican' />
     
     <button class="main-button" href="#">Pledge to #NEVERTRUMP</button>
 </form>

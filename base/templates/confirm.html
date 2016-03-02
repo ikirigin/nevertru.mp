@@ -1,16 +1,74 @@
 {% extends "base.html" %}
 
 {% block content %}
-<p class="bold">You’re almost done.</p>
-<p>Get a friend to verify your pledge by sharing your link &#8595;</p>
-<br />
 
-<textarea class="share-link">nevertru.mp/23f3g</textarea>
-          
-<label>Share</label>
+{% if is_verified %}
+    {% if is_authenticated %}
+        {% if is_owned %}
+            {# this is their page, prompt to share it #}
+            <p class="bold">You're Awesome!</p><p>Get friends to take the pledge by sharing your link &#8595;</p><br />
+            {% include "shareform.html" %}
+        {% else %}
+            {# this is not their pledge, but prompt to share it #}
+            <p class="bold">{{pledge.user}} pledged to never vote for Trump</p><p>Get a friends to take the pledge by sharing your link &#8595;</p><br />
+            {% include "shareform.html" %}
+        {% endif %}
+    {% else %}
+        {# this is not their page, load the pledge form with more social proof #}
+        <p>Donald Trump is bad for the United States</p>
+        {# <span>233,232</span> #}
+        <h2>Join {{pledge.user.first_name}} and millions of people and pledge to never vote for Trump</h2>
+        <form action="/pledge" method="POST">
+            {% csrf_token %}
+            <label for="name">Your Name</label>
+            <input class="field" type="text" name="name" />
+            <label for="email">Your Email</label>
+            <input class="field" type="text" name="email" />
+            <label for="party">Your Party</label>
+            <br /><br />
+            <a class="button" onclick="$('#partyinput').attr('value','Republican')">Republican</a>
+            <a class="button" onclick="$('#partyinput').attr('value','Democrat')">Democrat</a>            
+            <a class="button" onclick="$('#partyinput').attr('value','Other')">Other</a>
+            <input id="partyinput" type='hidden' name='party' value='Republican' />
+            <button class="main-button" href="#">Pledge to #NEVERTRUMP</button>
+        </form>
+    {% endif %}
+{% else %}
+    {% if is_authenticated %}
+        {% if is_owned %}
+            {# this is their pledge, prompt to verify their pledge#}
+            <p class="bold">You’re almost done.</p><p>Get a friend to verify your pledge by sharing your link &#8595;</p><br />
+            {% include "shareform.html" %}
+        {% else %}
+            {# this is not their pledge, prompt to verify it#}
+            <p class="bold">Verify that {{pledge.user.first_name}} will never vote Trump.</p>
+            <form action="/verify" method="POST">
+                {% csrf_token %}
+                <input id="verifycode" type='hidden' name='verifycode' value='{{pledge.code}}' />
+                <button class="main-button" href="#">Verify</button>
+            </form>
+        {% endif %}
+    {% else %}
+        {# not signed up or verified pledge, prompt to verify + pledge #}
+        <p>Donald Trump is bad for the United States</p>
+        {# <span>233,232</span> #}
+        <h2>Verify that {{pledge.user.first_name}} will never vote for Trump, and take the pledge yourself.</h2>
+        <form action="/pledge" method="POST">
+            {% csrf_token %}
+            <label for="name">Your Name</label>
+            <input class="field" type="text" name="name" />
+            <label for="email">Your Email</label>
+            <input class="field" type="text" name="email" />
+            <label for="party">Your Party</label>
+            <br /><br />
+            <a class="button" onclick="$('#partyinput').attr('value','Republican')">Republican</a>
+            <a class="button" onclick="$('#partyinput').attr('value','Democrat')">Democrat</a>            
+            <a class="button" onclick="$('#partyinput').attr('value','Other')">Other</a>
+            <input id="verifycode" type='hidden' name='verifycode' value='{{pledge.code}}' />
+            <input id="partyinput" type='hidden' name='party' value='Republican' />
+            <button class="main-button" href="#">Pledge to #NEVERTRUMP</button>
+        </form>
+    {% endif %}
+{% endif %}
 
-<a class="twitter" href="#">Twitter</a>
-<a class="facebook" href="#">Facebook</a>
 {% endblock %}
-
-

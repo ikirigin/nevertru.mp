@@ -2,11 +2,13 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>#NEVERTRUMP - Pledge to never vote for Donald Trump</title>
-		
+		<title>{# block title #}#NEVERTRUMP - Pledge to never vote for Donald Trump{# endblock #}</title>
+		<meta property="og:title"              content="#NEVERTRUMP - Pledge to never vote for Donald Trump" />
+	  <meta property="og:description"        content="Join millions pledging" />
+	  {% load static %}
+	  <meta property="og:image"              content="{% static 'i/asshole.jpg' %}" />
 		
 		<!--  JS 	-->
-		{% load static %}
 		<script type="text/javascript" src="{% static 'j/jquery-2.1.1.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'j/proto.js' %}"></script>
 		

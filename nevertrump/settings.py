@@ -81,14 +81,19 @@ db_from_env = dj_database_url.config()
 DATABASES = {
     'default': db_from_env,
 }
+# Update database configuration with $DATABASE_URL.
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
+from nevertrump.local_settings import *
+"""
 try:
-    import local_settings
+    from nevertrump.local_settings import *
     print('using local settings')
 except:
     print('using prod settings')
     pass
-
+"""
 
 AUTH_PASSWORD_VALIDATORS = (
     {
@@ -114,9 +119,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# Update database configuration with $DATABASE_URL.
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
