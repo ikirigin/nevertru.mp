@@ -10,7 +10,7 @@
             {% include "shareform.html" %}
         {% else %}
             {# this is not their pledge, but prompt to share it #}
-            <p class="bold">{{pledge.user}} pledged to never vote for Trump</p><p>Get a friends to take the pledge by sharing your link &#8595;</p><br />
+            <p class="bold">{{pledge.user.first_name}} pledged to never vote for Trump</p><p>Get a friends to take the pledge by sharing your link &#8595;</p><br />
             {% include "shareform.html" %}
         {% endif %}
     {% else %}
