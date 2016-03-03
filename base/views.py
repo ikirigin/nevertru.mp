@@ -118,8 +118,12 @@ def verify(request):
     verifycode = request.POST.get('verifycode', '')
     if not verifycode:
         return HttpResponseRedirect(reverse('home')+'?no_verifycode')
-    # don't require auth to verify
-    Pledge.anon_verify(verifycode)
+    user = request.user
+    if user.is_authenticated():
+        Pledge.verify(user, verifycode)
+    else:
+        # don't require auth to verify
+        Pledge.anon_verify(verifycode)
     return HttpResponseRedirect(reverse('home') + verifycode + '?verified')
     
 
