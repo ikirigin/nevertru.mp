@@ -79,8 +79,21 @@ class Pledge(models.Model):
         pledge.save()
         return pledge
     
+    @classmethod
+    def anon_verify(cls, code):
+        pledge = cls.get_by_code(code)
+        if not pledge:
+            return None
+        pledge.verified = True
+        pledge.verified_at = datetime.datetime.now()
+        pledge.save()
+        return pledge
+    
     def __str__(self):
         if self.verified:
-            return "{}, {}, verified by: {}".format(self.user.email, self.party, self.verified_by.email)
+            if self.verified_by:
+                return "{}, {}, verified by: {}".format(self.user.email, self.party, self.verified_by.email)
+            else:
+                return "{}, {}, verified by anonymous".format(self.user.email, self.party)
         else:
             return "{}, {}, not verified".format(self.user.email, self.party)

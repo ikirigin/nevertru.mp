@@ -67,6 +67,7 @@ def makepledge(request):
         email = request.POST.get('email','')
         party = request.POST.get('party','')
         party = request.POST.get('party','')
+        just_verified = request.POST.get('just_verified','')
         verifycode = request.POST.get('verifycode','')
         if not name or not email or not party:
             return HttpResponseRedirect(reverse('home')+"?missing_field")
@@ -81,7 +82,7 @@ def makepledge(request):
             return HttpResponseRedirect(reverse('home')+"?bad_pledge")
         # sign in the user
         login_user(request, user)
-        if verifycode:
+        if just_verified and verifycode:
             Pledge.verify(user, verifycode)
         return HttpResponseRedirect('/{}'.format(pledge.code))
         d = {'name':name, 'email':email, 'party':party}
@@ -90,27 +91,6 @@ def makepledge(request):
 
 
 def verifypledge(request, code):
-    """
-    if not valid code
-        bounce
-    if authed
-        if theirs
-          
-        if not theirs
-        
-    if not authed
-     
-        if this is their code
-            if it is verified
-            
-            if it is not verified
-        if this code is invalid
-        if this is not their code
-            
-    if user isn't signed in
-        if the code is valid
-    
-    """
     pledge = Pledge.get_by_code(code)
     if not pledge:
         return HttpResponseRedirect(reverse('home')+"?bad_code") 
@@ -121,16 +101,13 @@ def verifypledge(request, code):
     elif request.method == 'POST':
         # take in the pledge params
         pass
-    user = request.user
-    is_authenticated = user.is_authenticated()
-    is_verified = pledge.verified
-    is_owned = is_authenticated and pledge.user == user
     context = {
         'user' : request.user,
         'pledge' : pledge, 
         'is_verified' : pledge.verified,
         'is_authenticated' : request.user.is_authenticated(),
         'is_owned' : pledge.user == request.user,
+        'just_verified' : 'verified' in request.GET,
     }
     return render_to_response('confirm.html', context, context_instance=RequestContext(request))
 
@@ -141,11 +118,9 @@ def verify(request):
     verifycode = request.POST.get('verifycode', '')
     if not verifycode:
         return HttpResponseRedirect(reverse('home')+'?no_verifycode')
-    user = request.user
-    if not user.is_authenticated():
-        return HttpResponseRedirect(reverse('home')+'?not_authed')
-    Pledge.verify(user, verifycode)
-    return HttpResponseRedirect(reverse('home')+'?verified')
+    # don't require auth to verify
+    Pledge.anon_verify(verifycode)
+    return HttpResponseRedirect(reverse('home') + verifycode + '?verified')
     
 
 def take_pledge(name, email, party):

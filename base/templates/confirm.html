@@ -15,9 +15,15 @@
         {% endif %}
     {% else %}
         {# this is not their page, load the pledge form with more social proof #}
-        <p>Donald Trump is bad for the United States</p>
         {# <span>233,232</span> #}
+        {% if just_verified %}
+        <p>You verified {{pledge.user.first_name}}!</p>
+        <h2>Now take the pledge yourself to never vote for Trump</h2>
+        {% else %}
+        <p>Donald Trump is bad for the United States</p>
         <h2>Join {{pledge.user.first_name}} and millions of people and pledge to never vote for Trump</h2>
+        {% endif %}
+        
         <form action="/pledge" method="POST">
             {% csrf_token %}
             <label for="name">Your Name</label>
@@ -30,6 +36,11 @@
             <a class="button" onclick="$('#partyinput').attr('value','Democrat')">Democrat</a>            
             <a class="button" onclick="$('#partyinput').attr('value','Other')">Other</a>
             <input id="partyinput" type='hidden' name='party' value='Republican' />
+            
+            {% if just_verified %}
+            <input id="just_verified" type='hidden' name='just_verified' value='just_verified' />
+            <input id="verifycode" type='hidden' name='verifycode' value='{{pledge.code}}' />
+            {% endif %}
             <button class="main-button" href="#">Pledge to #NEVERTRUMP</button>
         </form>
     {% endif %}
@@ -51,22 +62,11 @@
     {% else %}
         {# not signed up or verified pledge, prompt to verify + pledge #}
         <p>Donald Trump is bad for the United States</p>
-        {# <span>233,232</span> #}
-        <h2>Verify that {{pledge.user.first_name}} will never vote for Trump, and take the pledge yourself.</h2>
-        <form action="/pledge" method="POST">
+        <p class="bold">Verify that {{pledge.user.first_name}} will never vote Trump.</p>
+        <form action="/verify" method="POST">
             {% csrf_token %}
-            <label for="name">Your Name</label>
-            <input class="field" type="text" name="name" />
-            <label for="email">Your Email</label>
-            <input class="field" type="text" name="email" />
-            <label for="party">Your Party</label>
-            <br /><br />
-            <a class="button" onclick="$('#partyinput').attr('value','Republican')">Republican</a>
-            <a class="button" onclick="$('#partyinput').attr('value','Democrat')">Democrat</a>            
-            <a class="button" onclick="$('#partyinput').attr('value','Other')">Other</a>
             <input id="verifycode" type='hidden' name='verifycode' value='{{pledge.code}}' />
-            <input id="partyinput" type='hidden' name='party' value='Republican' />
-            <button class="main-button" href="#">Pledge to #NEVERTRUMP</button>
+            <button class="main-button" href="#">Verify</button>
         </form>
     {% endif %}
 {% endif %}
